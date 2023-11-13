@@ -3,20 +3,23 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 
-import { FlatList, Text, TextInput, View, Button } from "react-native"; 
+import {Text, TextInput, View, Button } from "react-native"; 
 
 export default function App() {
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  // const [isLoading, setLoading] = useState(true);
+  // const [data, setData] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPass] = useState("");
   const [passCheck, setPassCheck] = useState("");
 
   return (
     <View style={{ flex: 1, padding: 24 }}>
-      {isLoading ? (
-        <Text>Loading...</Text>
-      ) : (
+      {
+      // isLoading ? (
+      //   <Text>Loading...</Text>
+      // ) : (
+       
+       
         <View
           style={{
             flex: 1,
@@ -32,8 +35,8 @@ export default function App() {
            </Text>
           {/* <Text style={{ fontSize: 18, color: "green", textAlign: "center" }}>
             {data.title}
-          </Text> */}
-          {/* <Text
+          </Text>
+          <Text
             style={{
               fontSize: 14,
               color: "green",
@@ -79,7 +82,8 @@ export default function App() {
     accessibilityLabel="Click this button to see a message"
       />
         </View>
-      )}
+      // )
+      }
     </View>
   );
 }
