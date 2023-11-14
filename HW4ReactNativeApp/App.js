@@ -1,89 +1,58 @@
-
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-
-
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import {Text, TextInput, View, Button } from "react-native"; 
+import {SignUpFunc} from './signup';
 
-export default function App() {
-  // const [isLoading, setLoading] = useState(true);
-  // const [data, setData] = useState([]);
-  const [username, setUsername] = useState("");
-  const [password, setPass] = useState("");
-  const [passCheck, setPassCheck] = useState("");
 
+const Stack = createStackNavigator();
+
+
+const MyStack = () => {
   return (
-    <View style={{ flex: 1, padding: 24 }}>
-      {
-      // isLoading ? (
-      //   <Text>Loading...</Text>
-      // ) : (
-       
-       
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
-        >
-        <Text>
-          Filler text
-          filler text
-          filler text
-          filler text
-           </Text>
-          {/* <Text style={{ fontSize: 18, color: "green", textAlign: "center" }}>
-            {data.title}
-          </Text>
-          <Text
-            style={{
-              fontSize: 14,
-              color: "green",
-              textAlign: "center",
-              paddingBottom: 10,
-            }}
-          >
-            Lectures:
-          </Text> */}
-
-          <TextInput
-          placeholder="Enter username"
-          onChangeText={(text)=> setUsername(text)}> 
-          </TextInput>
-          <TextInput
-          placeholder="Enter password"
-          onChangeText={(text)=> setPass(text)}
-          secureTextEntry
-          > 
-          </TextInput>
-          <TextInput
-          placeholder="Enter password"
-          onChangeText={(text)=> setPassCheck(text)}
-          secureTextEntry
-          >
-          </TextInput>
-          <Text> If the submit button is greyed out, it either means your password isn't safe, above 10 characters in length and contain at least one number, or they don't match.
-           </Text>
-           <Text>To share a photo from your phone with a friend, just press the button below!</Text>
-      <Button
-    onPress={() => alert(password + username + passCheck)}
-    title="Click here!"
-    color="#841584"
-    accessibilityLabel="Click this button to see a message"
-      />
-            <Button
-    onPress={() => 
-    axios.post("http://172.21.64.62/333ibghw3/index.php/user/list?username="+username+"&password="+password).then((response) => {
-      console.log(response.data);
-    })}
-    title="Add to database!"
-    color="#841584"
-    accessibilityLabel="Click this button to see a message"
-      />
-        </View>
-      // )
-      }
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ title: "Welcome" }}
+        /> 
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen
+          name="SignUp2"
+          component={SignUp2}
+          options={{ title: "Please sign up at the link below" }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
+
+const HomeScreen = ({ navigation }) => {
+  return (
+    <View>
+    <Button
+      title="Go to Jane's profile bro"
+      onPress={() => navigation.navigate("Profile", { name: "Jane" })}
+    />
+    <Button
+    title="Go to the sign up page"
+    onPress={() => navigation.navigate("SignUp2")}
+  />
+  </View>
+  );
+};
+
+const SignUp2 = ({ navigation }) => {
+
+  return   <Text>{SignUpFunc()}</Text>;
+
+  // <View> 
+  // </View>;
+};
+
+const ProfileScreen = ({ navigation, route }) => {
+  return <Text>This is {route.params.name}'s profile</Text>;
+};
+
+export default MyStack;
