@@ -71,6 +71,7 @@ export default function SignUpFunc({ navigation }) {
       onPress={() => alert(password + username + passCheck)}
       style={{backgroundColor: 'rgb(0, 31, 63)', borderRadius: 5, marginBottom: 5,
       marginTop: 20, padding: 10, alignSelf: 'center',}}
+      accessibilityLabel="Click this button to see a message!"
     >
       <Text style={{fontSize: 20, color: 'white'}}>Click here!</Text>
     </TouchableOpacity>
@@ -81,6 +82,7 @@ export default function SignUpFunc({ navigation }) {
     onPress={() => 
     axios.post("http://"+config()+"/333ibghw3/index.php/user/list?username="+username+"&password="+password).then((response) => {
       console.log(response); })}
+      accessibilityLabel="Click this button to add to database!"
       >
 
       <Text style={{fontSize: 20, color: "#AD65B2"}}>
@@ -92,6 +94,7 @@ export default function SignUpFunc({ navigation }) {
 onPress={() => navigation.navigate("LoginFunc")}
 style={{backgroundColor: 'rgb(0, 31, 63)', borderRadius: 5, marginBottom: 5,
       marginTop: 20, padding: 10, alignSelf: 'center',}}
+      accessibilityLabel="Click this button to go to login screen!"
 >
   <Text style={{fontSize: 20, color: 'white'}}>
     Go to login screen!

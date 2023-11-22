@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {Text, TextInput, View, Button, SafeAreaView, StyleSheet } from "react-native"; 
+import {Text, TextInput, View, Button, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native"; 
 import { Component } from "react/cjs/react.production.min";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -18,9 +18,6 @@ export default function LoginFunc(navigation) {
     const [fakeuser, setfake] = useState("");
 
     const getData = async () => {
-      // alert(realuser)
-      // alert("oogabooga")
-      // alert("wtf: "+Object.prototype.toString.call(x))
       try {
 
         const value = await AsyncStorage.getItem('fake');
@@ -38,7 +35,6 @@ export default function LoginFunc(navigation) {
     const testingswag = async () => {
       alert(realuser)
       alert("oogabooga")
-      // alert("wtf: "+Object.prototype.toString.call(x))
       try {
 
         const value = await AsyncStorage.getItem('loggedin');
@@ -54,12 +50,13 @@ export default function LoginFunc(navigation) {
     };
 
       return (
-      <SafeAreaView style={{flex: 1, padding:24, width: 350}}>
+      <SafeAreaView style={{flex: 1, padding:24}}>
       {
         <View
           style={{
             flex: 1,
             flexDirection: "column",
+            backgroundColor: 'rgb(173, 216, 230)'
           }}
         >
           <TextInput style = { styles.input}
@@ -71,80 +68,89 @@ export default function LoginFunc(navigation) {
           placeholder="Enter password"
           secureTextEntry
           > 
-          </TextInput>  
-      <Button
-    size = {50}
+          </TextInput> 
+
+      <TouchableOpacity
     onPress={() => alert(password + username)}
-    title="reveal password and username!"
-    accessibilityLabel="Click this button to see a message"
-      />
-      <Text>  </Text>
-            <Button
-    size = {50}
-
-    onPress={() => 
-    axios.get("http://"+config()+"/333ibghw3/index.php/user/login?username="+username+"&password="+password).then((response) => {
-      // console.log(response)
-      AsyncStorage.setItem('loggedIn',  username)
-      AsyncStorage.setItem('fake',  JSON.stringify(username))
-
-      ;
-    // alert("You logged in muahahah, enjoy your stay " + username)
-    
-    // localStorage.setitem()
-
-    })}
-    title="Login!"
-    color="#841584"
-    accessibilityLabel="Click this button to login"
-      />
-
-<Button
-  size = {50}
-  title = "print username33"
-  onPress={()=>
-    alert((AsyncStorage.getItem('loggedIn'))[0])
-    // console.log((JSON.parse(AsyncStorage.getItem("loggedIn"))).loggedIn)
-}
-  /> 
-
-{/* <Button
-  size = {50}
-  title = "print usernameasdjf;"
-  onPress={()=>getData()
-    // alert((AsyncStorage.getItem('loggedIn'))[0])
-    // console.log((JSON.parse(AsyncStorage.getItem("loggedIn"))).loggedIn)
-}  />  */}
-
-<Button
-  size = {50}
-  title = "print username FART"
-  onPress={()=>testingswag()
-        // alert((AsyncStorage.getItem('loggedIn'))[0])
-    // console.log((JSON.parse(AsyncStorage.getItem("loggedIn"))).loggedIn)
-}/>
-
-  <Button
-  size = {50}
-  title = "print storage?"
-  onPress={()=>AsyncStorage.getAllKeys((err, keys) => {
-    AsyncStorage.multiGet(keys, (error, stores) => {
-      stores.map((result, i, store) => {
-        console.log("fart");
-        console.log({ [store[i][0]]: store[i][1] });
-        console.log("sniff"+JSON.parse({[store[i][0]]: store[i][1]})   );
-        setUser({[store[i][0]]: store[i][1]});
-        alert({[store[i][0]]: store[i][1]});
-        alert(realuser);
-        return true;
-      });
-    });
-  })}
-  />
-
-<Button
-title = "go to reviewboard"
-onPress={() => navigation.navigate("Reviewboard")}/>
+    style={{backgroundColor: 'rgb(0, 31, 63)', borderRadius: 5, marginBottom: 20,
+      marginTop: 20, padding: 10, alignSelf: 'center',}}
+      accessibilityLabel="Click this button to see a message"
+      >
+        <Text style={{fontSize: 20, color: 'white'}}>
+        Reveal password and username!
+        </Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity
+      onPress={() => 
+        axios.get("http://"+config()+"/333ibghw3/index.php/user/login?username="+username+"&password="+password).then((response) => {
+          AsyncStorage.setItem('loggedIn',  username)
+          AsyncStorage.setItem('fake',  JSON.stringify(username))
+        })}
+        style={{backgroundColor: 'rgb(0, 31, 63)', borderRadius: 5, marginBottom: 20, padding: 10, alignSelf: 'center',}}
+        accessibilityLabel="Click this button to login"
+        >
+          <Text style={{color: "#AD65B2"}}>
+            Login!
+          </Text>
+      </TouchableOpacity>
+            
+            
+      <TouchableOpacity
+      onPress={()=> alert((AsyncStorage.getItem('loggedIn'))[0])}
+      style={{backgroundColor: 'rgb(0, 31, 63)', borderRadius: 5, marginBottom: 20,
+      padding: 10, alignSelf: 'center',}}
+      accessibilityLabel="Click this button to print username33"
+      >
+        <Text style={{fontSize: 20, color: 'white'}}>
+        Print username33
+        </Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity
+      onPress={()=>testingswag()}
+      style={{backgroundColor: 'rgb(0, 31, 63)', borderRadius: 5, marginBottom: 20,
+      padding: 10, alignSelf: 'center',}}
+      accessibilityLabel="Click this button to print username FART"
+      >
+        <Text style={{fontSize: 20, color: 'white'}}>
+          Print username FART
+        </Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity
+      onPress={()=>AsyncStorage.getAllKeys((err, keys) => {
+        AsyncStorage.multiGet(keys, (error, stores) => {
+          stores.map((result, i, store) => {
+            console.log("fart");
+            console.log({ [store[i][0]]: store[i][1] });
+            console.log("sniff"+JSON.parse({[store[i][0]]: store[i][1]})   );
+            setUser({[store[i][0]]: store[i][1]});
+            alert({[store[i][0]]: store[i][1]});
+            alert(realuser);
+            return true;
+          });
+        });
+      })}
+      style={{backgroundColor: 'rgb(0, 31, 63)', borderRadius: 5, marginBottom: 20,
+      padding: 10, alignSelf: 'center',}}
+      accessibilityLabel="Click this button to print storage"
+      >
+        <Text style={{fontSize: 20, color: 'white'}}>
+          Print storage?
+        </Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity
+      onPress={() => navigation.navigate("Reviewboard")}
+      style={{backgroundColor: 'rgb(0, 31, 63)', borderRadius: 5, marginBottom: 20,
+      padding: 10, alignSelf: 'center',}}
+      accessibilityLabel="Click this button to go to reviewboard"
+      >
+        <Text style={{fontSize: 20, color: 'white'}}>
+          Go to reviewboard!
+        </Text>
+      </TouchableOpacity>
 
 
         </View>
@@ -159,61 +165,9 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    borderRadius: 10, // Rounded borders
+    borderColor: 'white', // Border color
+    padding: 10,
+    backgroundColor: 'white', // White fill color
   },
 });
-
-// export default SignUpConst;
-
-
-
-{/* <Button
-  size = {50}
-  title = "print username"
-  onPress={()=>alert(JSON.parse(AsyncStorage.getItem('logged in')))}
-  /> */}
-  {/* // onPress={()=> */}
-  {/* //   // alert(JSON.parse(AsyncStorage.getItem('logged in')))
-  //   // console.log((JSON.parse(AsyncStorage.getItem("loggedIn"))).loggedIn)
-  //   console.log((AsyncStorage.getItem("loggedIn")).json)
-  // } */}
-  
-  {/* <Button
-
-  size = {50}
-  title = "print username i hope 2"
-  onPress = {()=>
-    AsyncStorage.getItem('key')
-  .then( value => console.log(value+"ooga") )
-  }
-  /> */}
-
-  
-      {/* <Button
-    size = {50}
-
-    onPress={() => 
-    axios.get("http://"+config()+"/333ibghw3/index.php/user/loggedin?username="+username+"&password="+password).then((response) => {
-    //   console.log(response);
-    alert("You logged in muahahah, enjoy your stay " + username)
-    })}
-    title="Attempt to determine logged in status!"
-    color="#841584"
-    accessibilityLabel="Click this button to login"
-      /> */}
-
-        {/* <Button
-      title="If you're "
-      onPress={() => navigation.navigate("Profile", { name: "Jane" })}
-    /> */}
-
-    {/* <Button
-    size = {50}
-    title="Pick me!"
-    color="#841584"
-    accessibilityLabel="Click this button to login"
-    onPress={() =>
-      async () => {const savedUser = await AsyncStorage.getItem("user");
-      const currentUser = JSON.parse(savedUser);
-      console.log(currentUser+"ooga");}
-    }
-      /> */}
