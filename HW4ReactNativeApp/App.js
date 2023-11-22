@@ -5,6 +5,7 @@ import {Text, TextInput, View, Button } from "react-native";
 import SignUpFunc from './signup';
 import LoginFunc from './login';
 import Reviewboard from './reviewboard';
+import Icon from "react-native-vector-icons/FontAwesome"; //to add music note to title
 
 import config from './config';
 
@@ -18,8 +19,11 @@ const MyStack = () => {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ title: "Welcome" }}
+          options={{ title: "Home", headerTitleAlign: 'left',//moves "Home" header to the left
+        }}  
         /> 
+        
+
         <Stack.Screen
           name="Reviewboard"
           component={Reviewboard}
@@ -42,8 +46,14 @@ const MyStack = () => {
 
 const HomeScreen = ({ navigation }) => {
   return (
-    <View>
-      <Text>  </Text>
+    <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#ADD8E6' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        {/* Display a music icon next to the "Song Rater" text */}
+      <Icon name="music" size={24} color="black" style={{ marginRight: 10 }} /> 
+        <Text style={{ fontSize: 35, fontWeight: 'bold', marginBottom: 20, marginTop: 20 }}>
+          Song Rater
+        </Text>
+      </View>
     <Button
     title="Go to the sign up page"
     onPress={() => navigation.navigate("SignUpFunc")}
