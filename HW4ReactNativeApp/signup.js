@@ -12,16 +12,16 @@ export default function SignUpFunc({ navigation }) {
     const [usernameTEXT, setUsernameTEXT] = useState("");
     const [password, setPass] = useState("");
     const [passCheck, setPassCheck] = useState("");
-    // const Stack = createStackNavigator();
 
 
       return (
-      <SafeAreaView style={{flex: 1, padding:24, width: 350}}>
+      <SafeAreaView style={{flex: 1, padding:24}}>
       {
         <View
           style={{
             flex: 1,
             flexDirection: "column",
+            backgroundColor: 'rgb(173, 216, 230)'
           }}
         >
           <TextInput style = { styles.input}
@@ -63,8 +63,6 @@ export default function SignUpFunc({ navigation }) {
     onPress={() => 
     axios.post("http://"+config()+"/333ibghw3/index.php/user/list?username="+username+"&password="+password).then((response) => {
       console.log(response); })
-      // if (response === "Error:"):
-      // alert("There's a duplicate");
 
     }
    
@@ -78,12 +76,9 @@ title = "go to login screen"
 onPress={() => navigation.navigate("LoginFunc")}/>
 
         </View>
-      // )
       }
       </SafeAreaView>
-    // </View>
   );
-    // }
 }
 
 const styles = StyleSheet.create({
