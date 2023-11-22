@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {Text, TextInput, View, Button, SafeAreaView, StyleSheet } from "react-native"; 
+import {Text, TextInput, View, Button, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native"; 
 import { Component } from "react/cjs/react.production.min";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -15,8 +15,12 @@ export default function SignUpFunc({ navigation }) {
 
 
       return (
+        
+        
       <SafeAreaView style={{flex: 1, padding:24}}>
+        
       {
+        
         <View
           style={{
             flex: 1,
@@ -24,7 +28,8 @@ export default function SignUpFunc({ navigation }) {
             backgroundColor: 'rgb(173, 216, 230)'
           }}
         >
-          <TextInput style = { styles.input}
+          <TextInput
+          style = {styles.input}
           placeholder="Enter username"
           onChangeText={(text)=> setUsername(text)}> 
           </TextInput>
@@ -46,38 +51,56 @@ export default function SignUpFunc({ navigation }) {
           >
           </TextInput>
            
-          <Text marginBottom={20}
-          >
-             If the submit button is greyed out, it either means your password isn't safe, above 10 characters in length and contain at least one number, or they don't match.
-           </Text>
-      <Button style = {{width: 20}}
+          <Text>
+  If the submit button is greyed out, it may be due to the following reasons:
+</Text>
+<Text>
+  {/*\u2022 is unicode for bullet point*/}
+  {"\u2022"} Your password isn't safe.
+</Text>
+<Text>
+  {"\u2022"} Password should be above 10 characters in length.
+</Text>
+<Text>
+  {"\u2022"} Password should contain at least one number.
+</Text>
+<Text>
+  {"\u2022"} The passwords entered don't match.
+</Text>
+      <TouchableOpacity
+      onPress={() => alert(password + username + passCheck)}
+      style={{backgroundColor: 'rgb(0, 31, 63)', borderRadius: 5, marginBottom: 5,
+      marginTop: 20, padding: 10, alignSelf: 'center',}}
+    >
+      <Text style={{fontSize: 20, color: 'white'}}>Click here!</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
     size = {50}
-    onPress={() => alert(password + username + passCheck)}
-    title="Click here!"
-    accessibilityLabel="Click this button to see a message"
-      />
-      <Text>  </Text>
-            <Button
-    size = {50}
-            style = {{width: "5%"}}
+    style={{backgroundColor: 'rgb(0, 31, 63)', borderRadius: 5, marginBottom: 5,
+      marginTop: 20, padding: 10, alignSelf: 'center',}}
     onPress={() => 
     axios.post("http://"+config()+"/333ibghw3/index.php/user/list?username="+username+"&password="+password).then((response) => {
-      console.log(response); })
+      console.log(response); })}
+      >
 
-    }
-   
-    title="Add to database!"
-    color="#841584"
-    accessibilityLabel="Click this button to see a message"
-      />
+      <Text style={{fontSize: 20, color: "#AD65B2"}}>
+      Add to Database!
+      </Text>
+      </TouchableOpacity>
 
-<Button
-title = "go to login screen"
-onPress={() => navigation.navigate("LoginFunc")}/>
+<TouchableOpacity
+onPress={() => navigation.navigate("LoginFunc")}
+style={{backgroundColor: 'rgb(0, 31, 63)', borderRadius: 5, marginBottom: 5,
+      marginTop: 20, padding: 10, alignSelf: 'center',}}
+>
+  <Text style={{fontSize: 20, color: 'white'}}>
+    Go to login screen!
+  </Text>
+</TouchableOpacity>
 
-        </View>
-      }
-      </SafeAreaView>
+</View>
+}
+ </SafeAreaView>
   );
 }
 
@@ -87,6 +110,10 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    borderRadius: 10, // Rounded borders
+    borderColor: 'white', // Border color
+    padding: 10,
+    backgroundColor: 'white', // White fill color
   },
 });
 
