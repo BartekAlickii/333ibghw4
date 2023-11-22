@@ -7,9 +7,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 import config from "./config";
 import LoginFunc from './login';
 // import {username} from './login';
+// import LogBox from "react-native"; 
 
 
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+
+// LogBox.ignoreLogs(['Invalid prop textStyle of type array supplied to Cell']);    
 
 
 
