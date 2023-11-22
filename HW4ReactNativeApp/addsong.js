@@ -10,10 +10,36 @@ import Reviewboard from './reviewboard';
 import SignUpFunc from './signup';
 
 
-export default function LoginFunc({navigation}) {
-    const [username, setUsername] = useState("");
-    const [password, setPass] = useState("");
+export default function AddSongFunc({navigation}) {
     const [realuser, setUser] = useState("");
+    const [song, setSong] = useState("");
+    const [artist, setArtist] = useState("");
+    const [rating, setRating] = useState("");
+
+    function handleChange(anum) {
+        if (Number(anum) > 5 || Number(anum) < 1)
+            return setRating(""); 
+        setRating(anum);
+    }
+
+    myClickHandler = () => {
+        var woof = "http://"+config()+"/333ibghw3/index.php/user/add?username="+realuser+"&song="+song+"&artist="+artist+"&rating="+rating;
+        axios.post(woof)
+        .catch((error) => alert ("damn"));
+      }
+
+    useEffect(
+        ()=>{AsyncStorage.getAllKeys((err, keys) => {
+        AsyncStorage.multiGet(keys, (error, stores) => {
+          stores.map((result, i, store) => {
+            console.log("updatedstorage");
+            const z = JSON.stringify({[store[i][0]]: store[i][1]});
+            setUser(z.slice(13, (z.length-2)));
+            return true;
+          });
+        });
+      })}
+      , []);
 
       return (
       <SafeAreaView style={{flex: 1, padding:24, width: 350}}>
@@ -25,22 +51,33 @@ export default function LoginFunc({navigation}) {
           }}
         >
           <TextInput style = { styles.input}
-          placeholder="Enter username"
-          onChangeText={(text)=> setUsername(text)}> 
+          placeholder="Enter song"
+          onChangeText={(text)=> setSong(text)}> 
           </TextInput>
           <TextInput style = { styles.input}
-          onChangeText={(text)=> setPass(text)}
-          placeholder="Enter password"
-          secureTextEntry
+          onChangeText={(text)=> setArtist(text)}
+          placeholder="Enter artist"
           > 
+          </TextInput>
+        <TextInput style = { styles.input}
+            keyboardType = 'numeric'
+            placeholder="Enter rating"
+            value = {rating}
+          onChangeText ={(num) => handleChange(num)}   
+          > 
+          
           </TextInput>  
+
+      <Text>  </Text>
       <Button
     size = {50}
-    onPress={() => alert(password + username)}
-    title="reveal password and username!"
+    onPress={() => myClickHandler()}
+    title="Add the song"
     accessibilityLabel="Click this button to see a message"
       />
+
       <Text>  </Text>
+
             <Button
     size = {50}
 

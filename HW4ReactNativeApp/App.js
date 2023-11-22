@@ -5,6 +5,8 @@ import {Text, TextInput, View, Button } from "react-native";
 import SignUpFunc from './signup';
 import LoginFunc from './login';
 import Reviewboard from './reviewboard';
+import AddSongFunc from './addsong';
+
 
 import config from './config';
 
@@ -35,6 +37,12 @@ const MyStack = () => {
           component={LoginFunc}
           options={{ title: "Please login at the link below" }}
         />
+          <Stack.Screen
+          name="AddSongFunc"
+          component={AddSongFunc}
+          options={{ title: "Tell us about a song you've heard :) (add song)" }}
+        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -54,32 +62,13 @@ const HomeScreen = ({ navigation }) => {
       title="Go to the login page"
     onPress={() => navigation.navigate("LoginFunc")}
   />  
-   <Text>  </Text>
-  <Button
-  title="Go to the reviewboard"
-  onPress={() => navigation.navigate("Reviewboard")}
-/>
-
-
   </View>
   );
 };
-
-// const SignUp2 = ({ navigation }) => {
-
-//   return   <Text>{SignUpFunc()}</Text>;
-
-//   // <View> 
-//   // </View>;
-// };
 
 const ProfileScreen = ({ navigation, route }) => {
   return <Text>This is {route.params.name}'s profile</Text>;
 };
 
-
-// const LoginScreen = ({ navigation}) => {
-//   return <Text> {LoginFunc()}</Text>;
-// }
 
 export default MyStack;

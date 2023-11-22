@@ -12,11 +12,10 @@ export default function SignUpFunc({ navigation }) {
     const [usernameTEXT, setUsernameTEXT] = useState("");
     const [password, setPass] = useState("");
     const [passCheck, setPassCheck] = useState("");
-    // const Stack = createStackNavigator();
 
 
       return (
-      <SafeAreaView style={{flex: 1, padding:24, width: 350}}>
+      <SafeAreaView style={{flex: 1, margin: 8, padding: 5,  width: 380}}>
       {
         <View
           style={{
@@ -29,10 +28,6 @@ export default function SignUpFunc({ navigation }) {
           onChangeText={(text)=> setUsername(text)}> 
           </TextInput>
 
-          <TextInput style = { styles.input}
-          placeholder="Enter username TEXT"
-          onChangeText={(text)=> setUsernameTEXT(text)}> 
-          </TextInput>
           <TextInput style = { styles.input}
           placeholder="Enter password"
           onChangeText={(text)=> setPass(text)}
@@ -50,33 +45,34 @@ export default function SignUpFunc({ navigation }) {
           >
              If the submit button is greyed out, it either means your password isn't safe, above 10 characters in length and contain at least one number, or they don't match.
            </Text>
-      <Button style = {{width: 20}}
-    size = {50}
-    onPress={() => alert(password + username + passCheck)}
-    title="Click here!"
-    accessibilityLabel="Click this button to see a message"
-      />
-      <Text>  </Text>
+
             <Button
     size = {50}
-            style = {{width: "5%"}}
     onPress={() => 
     axios.post("http://"+config()+"/333ibghw3/index.php/user/list?username="+username+"&password="+password).then((response) => {
       console.log(response); })
-      // if (response === "Error:"):
-      // alert("There's a duplicate");
-
     }
-   
-    title="Add to database!"
-    color="#841584"
+    disabled = {username == '' || password == '' || password.length <= 10 || password !== passCheck  || 
+    // passCheck.match(/\d/) 
+    !/\d/.test(passCheck)
+  }
+    title="Sign up"
     accessibilityLabel="Click this button to see a message"
       />
+      <Text></Text>
 
 <Button
 title = "go to login screen"
+color="#841584"
 onPress={() => navigation.navigate("LoginFunc")}/>
+      <Text></Text>
 
+<Button     
+    size = {50}
+    onPress={() => alert(password + username + passCheck)}
+    title="Print all input text (debug)!"
+    accessibilityLabel="Click this button to see a message"
+      />
         </View>
       // )
       }
