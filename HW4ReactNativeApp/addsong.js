@@ -1,34 +1,29 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {Text, TextInput, View, Button, SafeAreaView, StyleSheet } from "react-native"; 
-import { Component } from "react/cjs/react.production.min";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import config from './config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Reviewboard from './reviewboard';
-import SignUpFunc from './signup';
 
 
 export default function AddSongFunc({navigation}) {
     const [realuser, setUser] = useState("");
     const [song, setSong] = useState("");
     const [artist, setArtist] = useState("");
-    const [rating, setRating] = useState("");
+    const [rating, setRating] = useState("");           //define some constants to store things
 
-    function handleChange(anum) {
+    function handleChange(anum) {                   // make sure user input for rating is valid (between 1 and 5)
         if (Number(anum) > 5 || Number(anum) < 1)
             return setRating(""); 
         setRating(anum);
     }
 
-    myClickHandler = () => {
+    myClickHandler = () => {                                                //try adding the song to the database, if fails, woof :/
         var woof = "http://"+config()+"/333ibghw3/index.php/user/add?username="+realuser+"&song="+song+"&artist="+artist+"&rating="+rating;
         axios.post(woof)
         .catch((error) => alert ("damn"));
       }
 
-    useEffect(
+    useEffect(                                                          //get the username from async storage
         ()=>{AsyncStorage.getAllKeys((err, keys) => {
         AsyncStorage.multiGet(keys, (error, stores) => {
           stores.map((result, i, store) => {
@@ -50,16 +45,16 @@ export default function AddSongFunc({navigation}) {
             flexDirection: "column",
           }}
         >
-          <TextInput style = { styles.input}
+          <TextInput style = { styles.input}                    //input field for song
           placeholder="Enter song"
           onChangeText={(text)=> setSong(text)}> 
           </TextInput>
-          <TextInput style = { styles.input}
+          <TextInput style = { styles.input}                    //input field for artist
           onChangeText={(text)=> setArtist(text)}
           placeholder="Enter artist"
           > 
           </TextInput>
-        <TextInput style = { styles.input}
+        <TextInput style = { styles.input}                    //input field for rating
             keyboardType = 'numeric'
             placeholder="Enter rating"
             value = {rating}
@@ -69,37 +64,31 @@ export default function AddSongFunc({navigation}) {
           </TextInput>  
 
       <Text>  </Text>
-      <Button
+      <Button                                                   //button to add the entered song
     size = {50}
     onPress={() => myClickHandler()}
     title="Add the song"
-    accessibilityLabel="Click this button to see a message"
+    accessibilityLabel="Click this button to add the song"
       />
+           
+<Text></Text>
 
-      <Text>  </Text>
 
-            <Button
-    size = {50}
+<Button                                                         //button to go to the reviewboard
+title = "go to reviewboard"
+color="#841584"
+onPress={() => navigation.navigate("Reviewboard")}/>
 
-    onPress={() => 
-    axios.get("http://"+config()+"/333ibghw3/index.php/user/login?username="+username+"&password="+password).then((response) => {
-      AsyncStorage.setItem('loggedIn',  username);
-    })}
-    title="Login!"
-    color="#841584"
-    accessibilityLabel="Click this button to login"
-      />
-      <Text>  </Text>
+{/* <Text>  </Text>
 
-<Button title="Clear Async Storage (for debugging)" onPress={async() => {
+<Button title="Clear Async Storage (for debugging)" onPress={async() => {           //debugging stuff
     AsyncStorage.clear();
   }
   }>
   <Text>Clear Async Storage</Text>
-</Button>
+</Button> */}
 
-
-  <Button
+{/* <Button                                                                         //debugging stuff
   size = {50}
   title = "confirm username is correct"
   onPress={()=>AsyncStorage.getAllKeys((err, keys) => {
@@ -114,15 +103,18 @@ export default function AddSongFunc({navigation}) {
       });
     });
   })}
-  />
+  /> */}
 
-<Button
-title = "go to reviewboard"
-onPress={() => navigation.navigate("Reviewboard")}/>
         </View>
       }
+
+      
       </SafeAreaView>
   );
+
+
+  
+
 }
 
 const styles = StyleSheet.create({

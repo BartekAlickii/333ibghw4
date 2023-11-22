@@ -1,25 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {Text, TextInput, View, Button, SafeAreaView, StyleSheet, ScrollView } from "react-native"; 
-import { Component } from "react/cjs/react.production.min";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import config from "./config";
-import LoginFunc from './login';
-import AddSongFunc from './addsong';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// import {username} from './login';
-// import LogBox from "react-native"; 
-
-
-
-
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
-
-// LogBox.ignoreLogs(['Invalid prop textStyle of type array supplied to Cell']);    
-
-
 
 const CONTENT = {
     tableHead: ['ID', 'Username', 'Song', 'Artist', 'Rating']
@@ -31,6 +15,25 @@ const CONTENT = {
     const [myData, setData] = useState([]);
     const [username, setUsername] = useState("");
     const [realuser, setUser] = useState("");
+
+
+    useEffect(
+        () => {
+            axios
+              .get("http://"+config()+"/333ibghw3/index.php/user/list?limit=20")
+              .then((response) => {
+                const rd = response.data
+                const answer = rd.map(item=>[item.id, item.username, item.song, item.artist, item.rating])
+                setData(answer);
+                console.log("mapping from database")
+              })
+              .catch((error) => {
+                console.log(error);
+                console.log("ooga");
+              });
+              console.log("swag")
+          }
+      ,[]);
 
     useEffect(
         ()=> {
@@ -46,19 +49,8 @@ const CONTENT = {
           })
     }, []);
 
-    useEffect(() => {
-        axios
-          .get("http://"+config()+"/333ibghw3/index.php/user/list?limit=20")
-          .then((response) => {
-            const rd = response.data
-            const answer = rd.map(item=>[item.id, item.username, item.song, item.artist, item.rating])
-            setData(answer);
-            console.log("mapping from database");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }, []);
+    
+
 
     return (
 
@@ -67,8 +59,13 @@ const CONTENT = {
                 <Button
     title = "Tell us about a song you've heard :) (add song)"
     onPress={() => navigation.navigate("AddSongFunc")}/>
+        <Text></Text>
       {/* <View style={styles.container}> */}
         <Text> welcome {realuser} to the review board!!!</Text>
+        <Text></Text>
+        <Text> If you don't see the song you've added, try pressing the back button, and then returning</Text>
+        <Text></Text>
+
         <Table borderStyle={{ borderWidth: 1 }}>
           <Row
             data={CONTENT.tableHead}
