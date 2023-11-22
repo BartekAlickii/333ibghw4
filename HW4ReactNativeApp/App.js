@@ -4,6 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import {Text, TextInput, View, Button } from "react-native"; 
 import SignUpFunc from './signup';
 import LoginFunc from './login';
+import Reviewboard from './reviewboard';
+
 import config from './config';
 
 const Stack = createStackNavigator();
@@ -17,6 +19,11 @@ const MyStack = () => {
           name="Home"
           component={HomeScreen}
           options={{ title: "Welcome" }}
+        /> 
+        <Stack.Screen
+          name="Reviewboard"
+          component={Reviewboard}
+          options={{ title: "Reviewboard" }}
         /> 
         <Stack.Screen
           name="SignUpFunc"
@@ -46,7 +53,14 @@ const HomeScreen = ({ navigation }) => {
       style = {{margin:24}}
       title="Go to the login page"
     onPress={() => navigation.navigate("LoginFunc")}
-  />
+  />  
+   <Text>  </Text>
+  <Button
+  title="Go to the reviewboard"
+  onPress={() => navigation.navigate("Reviewboard")}
+/>
+
+
   </View>
   );
 };

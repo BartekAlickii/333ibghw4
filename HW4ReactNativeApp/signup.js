@@ -9,6 +9,7 @@ import LoginFunc from './login';
 
 export default function SignUpFunc({ navigation }) {
     const [username, setUsername] = useState("");
+    const [usernameTEXT, setUsernameTEXT] = useState("");
     const [password, setPass] = useState("");
     const [passCheck, setPassCheck] = useState("");
     // const Stack = createStackNavigator();
@@ -26,6 +27,11 @@ export default function SignUpFunc({ navigation }) {
           <TextInput style = { styles.input}
           placeholder="Enter username"
           onChangeText={(text)=> setUsername(text)}> 
+          </TextInput>
+
+          <TextInput style = { styles.input}
+          placeholder="Enter username TEXT"
+          onChangeText={(text)=> setUsernameTEXT(text)}> 
           </TextInput>
           <TextInput style = { styles.input}
           placeholder="Enter password"
