@@ -1,59 +1,71 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {Text, TextInput, View, Button, SafeAreaView, StyleSheet, ScrollView } from "react-native"; 
-import { Component } from "react/cjs/react.production.min";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import config from "./config";
-import LoginFunc from './login';
-// import {username} from './login';
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 
-
-
 const CONTENT = {
-    tableHead: ['ID', 'Username', 'Song', 'Artist', 'Rating'],
-    tableData: [
-      ['1', '2', '3'],
-      ['a', 'b', 'c'],
-      ['1', '2', '3'],
-      ['a', 'b', 'c'],
-    ],
+    tableHead: ['ID', 'Username', 'Song', 'Artist', 'Rating']
   };
 
   export default function Reviewboard({ navigation }) {
-
-    console.log("SWAAAAAAAAAAAAAAAAAAG");
     console.log(username);
 
     const [myData, setData] = useState([]);
     const [username, setUsername] = useState("");
-    const [password, setPass] = useState("");
-    const [passCheck, setPassCheck] = useState("");
+    const [realuser, setUser] = useState("");
+
+
+    useEffect(
+        () => {
+            axios
+              .get("http://"+config()+"/333ibghw3/index.php/user/list?limit=20")
+              .then((response) => {
+                const rd = response.data
+                const answer = rd.map(item=>[item.id, item.username, item.song, item.artist, item.rating])
+                setData(answer);
+                console.log("mapping from database")
+              })
+              .catch((error) => {
+                console.log(error);
+                console.log("ooga");
+              });
+              console.log("swag")
+          }
+      ,[]);
+
+    useEffect(
+        ()=> {
+        AsyncStorage.getAllKeys((err, keys) => {
+            AsyncStorage.multiGet(keys, (error, stores) => {
+              stores.map((result, i, store) => {
+            console.log("updatedstorage");
+                const z = JSON.stringify({[store[i][0]]: store[i][1]});
+                setUser(z.slice(13, (z.length-2)));
+                return true;
+              });
+            });
+          })
+    }, []);
 
     
 
-    useEffect(() => {
-        axios
-          .get("http://"+config()+"/333ibghw3/index.php/user/list?limit=20")
-          .then((response) => {
-            const rd = response.data
-            const answer = rd.map(item=>[item.id, item.username, item.song, item.artist, item.rating])
-            setData(answer);
-            // console.log("öoooooga");
-            // console.log(answer);
-            console.log("KSLD:JFSJDFS");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }, []);
 
     return (
+
+        
         <ScrollView>
-      <View style={styles.container}>
+                <Button
+    title = "Tell us about a song you've heard :) (add song)"
+    onPress={() => navigation.navigate("AddSongFunc")}/>
+        <Text></Text>
+      {/* <View style={styles.container}> */}
+        <Text> welcome {realuser} to the review board!!!</Text>
+        <Text></Text>
+        <Text> If you don't see the song you've added, try pressing the back button, and then returning</Text>
+        <Text></Text>
+
         <Table borderStyle={{ borderWidth: 1 }}>
           <Row
             data={CONTENT.tableHead}
@@ -62,7 +74,6 @@ const CONTENT = {
             textStyle={styles.text}
           />
           <TableWrapper style={styles.wrapper}>
-      
             <Rows
               data={myData}
               flexArr={[.5, 1.1, 2, 1.5, .7]}
@@ -71,7 +82,7 @@ const CONTENT = {
             />
           </TableWrapper>
         </Table>
-      </View>
+      {/* </View> */}
       </ScrollView>
     );
   }
@@ -82,8 +93,8 @@ const CONTENT = {
     head: { height: 40, backgroundColor: 'orange' },
     wrapper: { flexDirection: 'row' },
     title: { flex: 1, backgroundColor: '#2ecc71' },
-    row: { height: 28 },
-    text: { textAlign: 'center' },
+    row: { flexDirection: 'row' },
+    text: { textAlign: 'center', margin: 3 },
   });
 
 
