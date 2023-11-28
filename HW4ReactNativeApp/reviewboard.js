@@ -1,101 +1,139 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import {Text, TextInput, View, Button, SafeAreaView, StyleSheet, ScrollView } from "react-native"; 
-import config from "./config";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import axios from 'axios';
+// Import StarRatingNonInteractable and StarRating components but in React Native
+import { FaPencilAlt } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 
-const CONTENT = {
-    tableHead: ['ID', 'Username', 'Song', 'Artist', 'Rating']
-  };
+function Reviewboard() {
+  const [myData, setData] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editedItem, setEditedItem] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deletedItem, setDeletedItem] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [editedItemId, setEditedItemId] = useState(null);
 
-  export default function Reviewboard({ navigation }) {
-    console.log(username);
+  const filteredData = myData.filter((item) =>
+  item.artist.toLowerCase().includes(searchTerm.toLowerCase())
+);
 
-    const [myData, setData] = useState([]);
-    const [username, setUsername] = useState("");
-    const [realuser, setUser] = useState("");
-
-
-    useEffect(
-        () => {
-            axios
-              .get("http://"+config()+"/333ibghw3/index.php/user/list?limit=20")
-              .then((response) => {
-                const rd = response.data
-                const answer = rd.map(item=>[item.id, item.username, item.song, item.artist, item.rating])
-                setData(answer);
-                console.log("mapping from database")
-              })
-              .catch((error) => {
-                console.log(error);
-                console.log("ooga");
-              });
-              console.log("swag")
-          }
-      ,[]);
-
-    useEffect(
-        ()=> {
-        AsyncStorage.getAllKeys((err, keys) => {
-            AsyncStorage.multiGet(keys, (error, stores) => {
-              stores.map((result, i, store) => {
-            console.log("updatedstorage");
-                const z = JSON.stringify({[store[i][0]]: store[i][1]});
-                setUser(z.slice(13, (z.length-2)));
-                return true;
-              });
-            });
-          })
-    }, []);
-
-    
-
-
-    return (
-
-        
-        <ScrollView>
-                <Button
-    title = "Tell us about a song you've heard :) (add song)"
-    onPress={() => navigation.navigate("AddSongFunc")}/>
-        <Text></Text>
-      {/* <View style={styles.container}> */}
-        <Text> welcome {realuser} to the review board!!!</Text>
-        <Text></Text>
-        <Text> If you don't see the song you've added, try pressing the back button, and then returning</Text>
-        <Text></Text>
-
-        <Table borderStyle={{ borderWidth: 1 }}>
-          <Row
-            data={CONTENT.tableHead}
-            flexArr={[.5, 1.1, 2, 1.5, .7]}
-            style={styles.head}
-            textStyle={styles.text}
-          />
-          <TableWrapper style={styles.wrapper}>
-            <Rows
-              data={myData}
-              flexArr={[.5, 1.1, 2, 1.5, .7]}
-              style={styles.row}
-              textStyle={styles.text}
-            />
-          </TableWrapper>
-        </Table>
-      {/* </View> */}
-      </ScrollView>
-    );
-  }
-    
+const handleEdit = (item) => {
+  setEditedItem(item);
+  setEditedItemId(item.id); // Store the ID of the edited song
+  setShowEditModal(true);
   
-  const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, paddingTop: 100, backgroundColor: '#fff' },
-    head: { height: 40, backgroundColor: 'orange' },
-    wrapper: { flexDirection: 'row' },
-    title: { flex: 1, backgroundColor: '#2ecc71' },
-    row: { flexDirection: 'row' },
-    text: { textAlign: 'center', margin: 3 },
+};
+
+const handleCancelEdit = () => {
+  setShowEditModal(false);
+};
+const handleCancelDelete = () => {
+  setShowDeleteModal(false);
+};
+// http://localhost/333ibghw3/index.php/user/edit?id=11&username=Bartek&artist=Vacations&song=Relax&rating=4
+const handleSaveEdit = () => {
+  axios
+  .put("http://localhost/333ibghw3/index.php/user/edit?id="+editedItem.id+"&username="+localStorage.getItem("logged in")+"&song="+editedItem.song+"&artist="+editedItem.artist+"&rating="+editedItem.rating)
+  .then((response) => {
+    // setData(response.data);
+  })
+  .catch((error) => {
+    console.log(error);
+  alert(("http://localhost/333ibghw3/index.php/user/edit?id="+editedItem.id+"&username="+localStorage.getItem("logged in")+"&song="+editedItem.song+"&artist="+editedItem.artist+"&rating="+editedItem.rating))
   });
 
+  //Handle saving the edited item
+  console.log("Edited Item:", editedItem); // Print the edited item to the console
+  setShowEditModal(false);
+  window.location.reload(false);
 
+};
+
+
+const handleSaveDelete = () => {
+  axios
+  .delete("http://localhost/333ibghw3/index.php/user/delete?username="+localStorage.getItem("logged in")+"&song="+deletedItem.song+"&artist="+deletedItem.artist)
+  .then((response) => {
+  })
+  .catch((error) => {
+    console.log(error);
+  });
   
+  // Handle saving the edited item
+  console.log("Deleted Item:", deletedItem); // Print the edited item to the console
+  setShowDeleteModal(false);
+  window.location.reload(false);
+
+};
+
+
+const handleDelete = (item) =>
+{
+    setDeletedItem(item);
+    setShowDeleteModal(true);
+}
+
+
+
+useEffect(() => {
+  axios
+    .get("http://localhost/333ibghw3/index.php/user/list?limit=20")
+    .then((response) => {
+      setData(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}, []);
+
+
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', marginTop: 20 }}>
+      <TextInput
+        placeholder="Search..."
+        value={searchTerm}
+        onChangeText={(text) => setSearchTerm(text)}
+        style={{ borderRadius: 10, padding: 5 }}
+      />
+      <FlatList
+        data={filteredData}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => {
+          const userIsUser = localStorage.getItem('logged in') === item.username;
+          return (
+            <View key={item.id}>
+              <Text style={{ textAlign: 'center' }}>{item.username}</Text>
+              <Text style={{ textAlign: 'center' }}>{item.artist}</Text>
+              <Text style={{ textAlign: 'center' }}>{item.song}</Text>
+              {/* Render StarRatingNonInteractable */}
+              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                {/* Render StarRatingNonInteractable component or appropriate rating visualization */}
+                <Text>Rating: {item.rating}</Text>
+              </View>
+              <Text style={{ textAlign: 'center' }}>ID: {item.id}</Text>
+              {userIsUser && (
+                <TouchableOpacity onPress={() => handleEdit(item)}>
+                  {/* Render edit icon */}
+                  {/* For example: <Icon name="edit" size={24} color="black" /> */}
+                </TouchableOpacity>
+              )}
+              {userIsUser && (
+                <TouchableOpacity onPress={() => handleDelete(item)}>
+                  {/* Render delete icon */}
+                  {/* For example: <Icon name="trash" size={24} color="black" /> */}
+                </TouchableOpacity>
+              )}
+            </View>
+          );
+        }}
+      />
+
+      {/* Edit and Delete Modals */}
+      {/* Implement Modals using React Native components and similar logic */}
+    </View>
+  );
+}
+
+export default Reviewboard;
