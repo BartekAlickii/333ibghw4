@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import axios from 'axios';
 // Import StarRatingNonInteractable and StarRating components but in React Native
-import { FaPencilAlt } from "react-icons/fa";
-import { FaTrashAlt } from "react-icons/fa";
+// import { FaPencilAlt } from "react-icons/fa";
+// import { FaTrashAlt } from "react-icons/fa";
 
 function Reviewboard() {
   const [myData, setData] = useState([]);
