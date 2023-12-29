@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 
 const CONTENT = {
-  tableHead: ['ID', 'Username', 'Song', 'Artist', 'Rating']
+  tableHead: ['ID', 'Username', 'Song', 'Artist', 'Rating', 'Edit', 'Delete'] // Updated table headers
 };
 
 export default function Reviewboard({ navigation }) {
@@ -14,6 +14,16 @@ export default function Reviewboard({ navigation }) {
   const [realuser, setUser] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   
+  const handleEdit = (rowItem) => {
+    // Logic to handle editing the row
+    console.log("Edit:", rowItem);
+  };
+
+  const handleDelete = (rowItem) => {
+    // Logic to handle deleting the row
+    console.log("Delete:", rowItem);
+  };
+
   useEffect(() => {
     axios
       .get("http://" + config() + "/333ibghw3/index.php/user/list?limit=20")
@@ -45,6 +55,31 @@ export default function Reviewboard({ navigation }) {
     item.some(value => value.toString().toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
+  const generateRows = () => {
+    const filteredDataWithButtons = filteredData.map((rowData, index) => {
+      return [
+        ...rowData,
+        <Button
+          onPress={() => handleEdit(rowData)}
+          title="Edit"
+          //disabled={/* Logic to disable button if not editable */}
+        />,
+        <Button
+          onPress={() => handleDelete(rowData)}
+          title="Delete"
+          //disabled={/* Logic to disable button if not deletable */}
+        />
+      ]
+    }) 
+    
+    return <Rows
+      data={filteredDataWithButtons}
+      flexArr={[.5, 1.1, 2, 1.5, .7, .7, .7]}
+      style={styles.row}
+      textStyle={styles.rowText}
+    />
+  };
+
   return (
     <ScrollView style={{ backgroundColor: 'rgb(173, 216, 230)' }}>
       <Button
@@ -63,17 +98,14 @@ export default function Reviewboard({ navigation }) {
       <Table borderStyle={{ borderWidth: 1, borderColor: 'white' }}>
         <Row
           data={CONTENT.tableHead}
-          flexArr={[.5, 1.1, 2, 1.5, .7]}
+          flexArr={[.5, 1.1, 2, 1.5, .7, .7, .7]} // Adjusted for new columns
           style={styles.head}
           textStyle={styles.text}
         />
         <TableWrapper style={styles.wrapper}>
-          <Rows
-            data={filteredData}
-            flexArr={[.5, 1.1, 2, 1.5, .7]}
-            style={styles.row}
-            textStyle={styles.rowText}
-          />
+          {
+            generateRows() 
+          }
         </TableWrapper>
       </Table>
     </ScrollView>
@@ -98,7 +130,7 @@ const styles = StyleSheet.create({
     margin: 3,
     color: 'black',
     fontWeight: 'bold',
-    fontFamily: 'Noto Sans',
+    // fontFamily: 'Noto Sans',
     fontSize: 16,
   },
 
