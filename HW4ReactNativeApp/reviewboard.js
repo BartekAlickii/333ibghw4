@@ -59,14 +59,25 @@ export default function Reviewboard({ navigation }) {
 
   const generateRows = () => {
     const filteredDataWithButtons = filteredData.map((rowData, index) => {
+    
+    // setting up check for the visibility of buttons
+    const username = rowData[1]; // Assuming username is at index 1
+
+    // Check if the realuser matches the username in the row
+    const showButtons = realuser === username;
+      
       return [
         ...rowData,
-        <TouchableOpacity onPress={() => handleEdit(rowData)}>
-          <Icon name="pencil" size={25} color="blue" />
-        </TouchableOpacity>,
-        <TouchableOpacity onPress={() => handleDelete(rowData)}>
-          <Icon name="trash" size={25} color="red" />
-        </TouchableOpacity>
+        showButtons ? (
+          <TouchableOpacity onPress={() => handleEdit(rowData)}>
+            <Icon name="pencil" size={25} color="blue" />
+          </TouchableOpacity>
+        ) : null,
+        showButtons ? (
+          <TouchableOpacity onPress={() => handleDelete(rowData)}>
+            <Icon name="trash" size={25} color="red" />
+          </TouchableOpacity>
+        ) : null,
       ]
     }) 
     
