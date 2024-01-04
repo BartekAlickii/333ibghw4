@@ -4,6 +4,8 @@ import { Text, TextInput, View, Button, SafeAreaView, StyleSheet, ScrollView } f
 import config from "./config";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { TouchableOpacity } from 'react-native-gesture-handler'; // Import TouchableOpacity
 
 const CONTENT = {
   tableHead: ['ID', 'Username', 'Song', 'Artist', 'Rating', 'Edit', 'Delete'] // Updated table headers
@@ -59,16 +61,12 @@ export default function Reviewboard({ navigation }) {
     const filteredDataWithButtons = filteredData.map((rowData, index) => {
       return [
         ...rowData,
-        <Button
-          onPress={() => handleEdit(rowData)}
-          title="Edit"
-          //disabled={/* Logic to disable button if not editable */}
-        />,
-        <Button
-          onPress={() => handleDelete(rowData)}
-          title="Delete"
-          //disabled={/* Logic to disable button if not deletable */}
-        />
+        <TouchableOpacity onPress={() => handleEdit(rowData)}>
+          <Icon name="pencil" size={25} color="blue" />
+        </TouchableOpacity>,
+        <TouchableOpacity onPress={() => handleDelete(rowData)}>
+          <Icon name="trash" size={25} color="red" />
+        </TouchableOpacity>
       ]
     }) 
     
