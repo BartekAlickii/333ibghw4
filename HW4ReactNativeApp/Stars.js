@@ -13,7 +13,7 @@ export default function StarRating({ rating }) {
         <MaterialIcons
           key={i}
           name={i < filledStars ? 'star' : 'star-border'}
-          size={32}
+          size={15}
           style={styles.starSelected}
         />
       );

@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native-gesture-handler'; // Import TouchableOpacity
-
+import StarRating from './Stars'; // Import the StarRating component
 const CONTENT = {
   tableHead: ['ID', 'Username', 'Song', 'Artist', 'Rating', 'Edit', 'Delete'] // Updated table headers
 };
@@ -59,6 +59,7 @@ export default function Reviewboard({ navigation }) {
 
   const generateRows = () => {
     const filteredDataWithButtons = filteredData.map((rowData, index) => {
+    const rating = rowData[4]; // Assuming rating is at index 4, adjust if needed
     
     // setting up check for the visibility of buttons
     const username = rowData[1]; // Assuming username is at index 1
@@ -67,7 +68,9 @@ export default function Reviewboard({ navigation }) {
     const showButtons = realuser === username;
       
       return [
-        ...rowData,
+        
+        ...rowData.slice(0, 4), // Existing content before rating, adjust slice range as needed
+        <StarRating key={`rating_${index}`} rating={rating} />, // StarRating component
         showButtons ? (
           <TouchableOpacity onPress={() => handleEdit(rowData)}>
             <Icon name="pencil" size={25} color="blue" />
@@ -80,13 +83,13 @@ export default function Reviewboard({ navigation }) {
         ) : null,
       ]
     }) 
-    
+    // styling for the data itself
     return <Rows
-      data={filteredDataWithButtons}
-      flexArr={[.5, 1.1, 2, 1.5, .7, .7, .7]}
-      style={styles.row}
-      textStyle={styles.rowText}
-    />
+        data={filteredDataWithButtons}
+        flexArr={[.5, 1.2, 1.1, 1.5, 1.5, .51, .45]} // Adjusted for new columns
+        style={styles.row}
+        textStyle={styles.rowText}
+      />
   };
 
   return (
@@ -105,9 +108,10 @@ export default function Reviewboard({ navigation }) {
       />
 
       <Table borderStyle={{ borderWidth: 1, borderColor: 'white' }}>
+        {/* styling for the table head here to match the data */}
         <Row
           data={CONTENT.tableHead}
-          flexArr={[.5, 1.1, 2, 1.5, .7, .7, .7]} // Adjusted for new columns
+          flexArr={[.5, 1.2, 1.1, 1.5, 1.5, .51, .45]} // Adjusted for new columns
           style={styles.head}
           textStyle={styles.text}
         />
