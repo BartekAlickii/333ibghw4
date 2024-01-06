@@ -41,6 +41,6 @@ one can sucessfully run the code from this repo by:
 - Extracting the contents
 - cd into 'HW4ReactNativeApp' via the terminal
 - Enter 'yarn' into the terminal cd'd into 'HW4ReactNativeApp'
-- Enter 'npm run ios' into the terminal
-- When prompted, 'use port 8082 instead?' Enter/choose yes!
+- Enter 'npm run ios' into the terminal (ensure watchman has access to your working folder)
+- If/When prompted, 'use port 8082 instead?' Enter/choose yes!
 - The code should execute properly! :D
