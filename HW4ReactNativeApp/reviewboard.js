@@ -17,6 +17,7 @@ export default function Reviewboard({ navigation }) {
   const [realuser, setUser] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   
+  // handleEdit simply pulls the desired row of information and passes it to EditScreen.js after asking for permission.
   const handleEdit = (rowItem) => {
     const [id, username, song, artist, rating] = rowItem;
   
@@ -38,6 +39,7 @@ export default function Reviewboard({ navigation }) {
     );
   };
 
+  // handleDelete mirrors handleEdit just with DeleteScreen in place of Editscreen.
   const handleDelete = (rowItem) => {
     const [id, username, song, artist, rating] = rowItem;
   
@@ -58,7 +60,8 @@ export default function Reviewboard({ navigation }) {
       ]
     );
   };
-
+  
+  // This block uses axios to pull from the database for the reviews themselves to prepare them for search functionality.
   useEffect(() => {
     axios
       .get("http://" + config() + "/333ibghw3/index.php/user/list?limit=20")
@@ -91,6 +94,7 @@ export default function Reviewboard({ navigation }) {
     item.some(value => value.toString().toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
+  // generateRows renders our data with respect to the search functionality.
   const generateRows = () => {
     const filteredDataWithButtons = filteredData.map((rowData, index) => {
     const rating = rowData[4]; // Assuming rating is at index 4, adjust if needed
@@ -117,7 +121,8 @@ export default function Reviewboard({ navigation }) {
         ) : null,
       ]
     }) 
-    // styling for the data itself
+    
+    // This is styling for the data itself
     return <Rows
         data={filteredDataWithButtons}
         flexArr={[.5, 1.2, 1.1, 1.5, 1.5, .51, .45]} // Adjusted for new columns
@@ -125,7 +130,7 @@ export default function Reviewboard({ navigation }) {
         textStyle={styles.rowText}
       />
   };
-
+// This is the top of the reviewboard display inviting/directing the user to add a song or back out to refresh the reviewboard.
   return (
     <ScrollView style={{ backgroundColor: 'rgb(173, 216, 230)' }}>
       <Button
@@ -133,7 +138,7 @@ export default function Reviewboard({ navigation }) {
         onPress={() => navigation.navigate("AddSongFunc")} />
       <Text style={{ marginBottom: 15, marginTop: 10 }}> Welcome {realuser} to the review board!!!</Text>
       <Text style={{ marginBottom: 15 }}> If you don't see the song you've added/edited/deleted (in the deleted case still visible), try pressing the back button, and then returning</Text>
-      
+      {/* This is the search bar/navigation bar:  */}
       <TextInput
         style={styles.searchInput}
         placeholder="Search..."
@@ -142,13 +147,14 @@ export default function Reviewboard({ navigation }) {
       />
 
       <Table borderStyle={{ borderWidth: 1, borderColor: 'white' }}>
-        {/* styling for the table head here to match the data */}
+        {/* styling for the table head here to match the rows of data */}
         <Row
           data={CONTENT.tableHead}
           flexArr={[.5, 1.2, 1.1, 1.5, 1.5, .51, .45]} // Adjusted for new columns
           style={styles.head}
           textStyle={styles.text}
         />
+        {/* rendering the rows of data literally by calling generateRows */}
         <TableWrapper style={styles.wrapper}>
           {
             generateRows() 
@@ -177,6 +183,7 @@ const styles = StyleSheet.create({
     margin: 3,
     color: 'black',
     fontWeight: 'bold',
+    // This was commented out for an interesting error we were recieving, but it seems to persist but not cause any issues, so we leave this be...
     // fontFamily: 'Noto Sans',
     fontSize: 16,
   },

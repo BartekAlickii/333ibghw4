@@ -1,3 +1,5 @@
+// For nicer comments, EditScreen mirrors this file almost exactly just with small changes
+// to support the deletion operation/theme.
 import React from 'react';
 import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
