@@ -6,6 +6,8 @@ import SignUpFunc from './signup';
 import LoginFunc from './login';
 import Reviewboard from './reviewboard';
 import AddSongFunc from './addsong';
+import EditScreen from './EditScreen';
+import DeleteScreen from './DeleteScreen';
 
 const Stack = createStackNavigator();
 
@@ -39,7 +41,16 @@ const MyStack = () => {
           component={LoginFunc}
           options={{ title: "Please login at the link below" }}
         />
-        
+        <Stack.Screen
+          name="EditScreen" // Define a screen for EditScreen
+          component={EditScreen}
+          options={{ title: "Edit Item" }} 
+        />
+        <Stack.Screen
+          name="DeleteScreen" // Define a screen for DeleteScreen
+          component={DeleteScreen}
+          options={{ title: "Delete Item" }} 
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
