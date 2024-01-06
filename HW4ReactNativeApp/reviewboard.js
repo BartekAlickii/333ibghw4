@@ -5,8 +5,8 @@ import config from "./config";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { TouchableOpacity } from 'react-native-gesture-handler'; // Import TouchableOpacity
-import StarRating from './Stars'; // Import the StarRating component
+import { TouchableOpacity } from 'react-native-gesture-handler'; 
+import StarRating from './Stars'; 
 
 const CONTENT = {
   tableHead: ['ID', 'Username', 'Song', 'Artist', 'Rating', 'Edit', 'Delete'] // Updated table headers
@@ -86,6 +86,7 @@ export default function Reviewboard({ navigation }) {
     });
   }, []);
 
+  // filteredData for the search functionality to properly operate. 
   const filteredData = myData.filter(item =>
     item.some(value => value.toString().toLowerCase().includes(searchTerm.toLowerCase()))
   );
@@ -131,7 +132,7 @@ export default function Reviewboard({ navigation }) {
         title="Tell us about a song you've heard :) (add song)"
         onPress={() => navigation.navigate("AddSongFunc")} />
       <Text style={{ marginBottom: 15, marginTop: 10 }}> Welcome {realuser} to the review board!!!</Text>
-      <Text style={{ marginBottom: 15 }}> If you don't see the song you've added/edited/deleted, try pressing the back button, and then returning</Text>
+      <Text style={{ marginBottom: 15 }}> If you don't see the song you've added/edited/deleted (in the deleted case still visible), try pressing the back button, and then returning</Text>
       
       <TextInput
         style={styles.searchInput}
