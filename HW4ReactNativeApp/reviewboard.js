@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Text, TextInput, View, Button, SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import { Text, TextInput, View, Button, SafeAreaView, StyleSheet, ScrollView, Alert } from "react-native";
 import config from "./config";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
@@ -17,13 +17,77 @@ export default function Reviewboard({ navigation }) {
   const [searchTerm, setSearchTerm] = useState("");
   
   const handleEdit = (rowItem) => {
-    // Logic to handle editing the row
-    console.log("Edit:", rowItem);
+    const [id, username, song, artist, rating] = rowItem;
+
+    Alert.alert(
+      `Edit Item ID: ${id}?`,
+      'Do you want to edit this item? \n Note: Click save if you leave the field unchanged, not \'cancel\'. \n Cancel ends the saving operation completely!',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Edit',
+          onPress: () => {
+            editField('Song', song, (updatedSong) => {
+              editField('Artist', artist, (updatedArtist) => {
+                editField('Rating', rating.toString(), (updatedRating) => {
+                  // Perform the update logic here using updatedSong, updatedArtist, updatedRating
+                  console.log(`Updated Item ID: ${id}`);
+                  console.log('Updated Song:', updatedSong);
+                  console.log('Updated Artist:', updatedArtist);
+                  console.log('Updated Rating:', updatedRating);
+                });
+              });
+            });
+          },
+        },
+      ]
+    );
+  };
+
+  const editField = (fieldName, defaultValue, callback) => {
+    Alert.prompt(
+      `Edit ${fieldName}`,
+      `Enter new ${fieldName}:`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Save',
+          onPress: (editedText) => {
+            const updatedValue = editedText !== '' ? editedText : defaultValue;
+            callback(updatedValue);
+          },
+        },
+      ],
+      'plain-text',
+      defaultValue
+    );
   };
 
   const handleDelete = (rowItem) => {
-    // Logic to handle deleting the row
-    console.log("Delete:", rowItem);
+    const itemId = rowItem[0]; // Assuming ID is at index 0, adjust if needed
+    // Show an alert for deleting
+    Alert.alert(
+      "Delete Item?",
+      `Do you want to delete item with ID: ${itemId}?`,
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          onPress: () => {
+            // Logic to handle deleting the row
+            console.log("Delete:", rowItem);
+          },
+          style: "destructive",
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   useEffect(() => {
