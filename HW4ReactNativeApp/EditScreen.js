@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import axios from 'axios';
 
 const EditScreen = ({ navigation, route }) => {
   const { id, username, song, artist, rating } = route.params;
@@ -9,11 +10,17 @@ const EditScreen = ({ navigation, route }) => {
   const [editedRating, setEditedRating] = useState(rating.toString());
 
   const handleSave = () => {
-    console.log('Updated Song:', editedSong);
-    console.log('Updated Artist:', editedArtist);
-    console.log('Updated Rating:', editedRating);
-
-    navigation.goBack();
+    // Implement PUT request using Axios to update the item
+    axios
+      .put(`http://localhost/333ibghw3/index.php/user/edit?id=${id}&username=${username}&song=${editedSong}&artist=${editedArtist}&rating=${editedRating}`)
+      .then((response) => {
+        console.log('Item updated successfully:', response.data);
+        navigation.goBack(); // Navigate back on successful update
+      })
+      .catch((error) => {
+        console.error('Error updating item:', error);
+        Alert.alert('Error', 'Failed to update item. Please try again.');
+      });
   };
 
   const handleCancel = () => {

@@ -38,46 +38,24 @@ export default function Reviewboard({ navigation }) {
     );
   };
 
-  const editField = (fieldName, defaultValue, callback) => {
-    Alert.prompt(
-      `Edit ${fieldName}`,
-      `Enter new ${fieldName}:`,
+  const handleDelete = (rowItem) => {
+    const [id, username, song, artist, rating] = rowItem;
+  
+    Alert.alert(
+      `Delete Item ID: ${id}?`,
+      'Do you want to delete this item?',
       [
         {
           text: 'Cancel',
           style: 'cancel',
         },
         {
-          text: 'Save',
-          onPress: (editedText) => {
-            const updatedValue = editedText !== '' ? editedText : defaultValue;
-            callback(updatedValue);
-          },
-        },
-      ],
-      'plain-text',
-      defaultValue
-    );
-  };
-
-  const handleDelete = (rowItem) => {
-    const itemId = rowItem[0]; // Assuming ID is at index 0, adjust if needed
-    // Show an alert for deleting
-    Alert.alert(
-      "Delete Item?",
-      `Do you want to delete item with ID: ${itemId}?`,
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Delete",
+          text: 'Navigate to delete screen',
           onPress: () => {
-            // Logic to handle deleting the row
-            console.log("Delete:", rowItem);
+            navigation.navigate('DeleteScreen', { id, username, song, artist, rating });
           },
-          style: "destructive",
         },
-      ],
-      { cancelable: true }
+      ]
     );
   };
 
@@ -153,7 +131,7 @@ export default function Reviewboard({ navigation }) {
         title="Tell us about a song you've heard :) (add song)"
         onPress={() => navigation.navigate("AddSongFunc")} />
       <Text style={{ marginBottom: 15, marginTop: 10 }}> Welcome {realuser} to the review board!!!</Text>
-      <Text style={{ marginBottom: 15 }}> If you don't see the song you've added, try pressing the back button, and then returning</Text>
+      <Text style={{ marginBottom: 15 }}> If you don't see the song you've added/edited/deleted, try pressing the back button, and then returning</Text>
       
       <TextInput
         style={styles.searchInput}
