@@ -6,6 +6,7 @@ import SignUpFunc from './signup';
 import LoginFunc from './login';
 import Reviewboard from './reviewboard';
 import AddSongFunc from './addsong';
+import EditScreen from './EditScreen';
 
 const Stack = createStackNavigator();
 
@@ -39,7 +40,11 @@ const MyStack = () => {
           component={LoginFunc}
           options={{ title: "Please login at the link below" }}
         />
-        
+        <Stack.Screen
+          name="EditScreen" // Define a screen for EditScreen
+          component={EditScreen}
+          options={{ title: "Edit Item" }} // Add any specific options you want
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

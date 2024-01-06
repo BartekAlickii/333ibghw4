@@ -7,6 +7,7 @@ import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native-gesture-handler'; // Import TouchableOpacity
 import StarRating from './Stars'; // Import the StarRating component
+
 const CONTENT = {
   tableHead: ['ID', 'Username', 'Song', 'Artist', 'Rating', 'Edit', 'Delete'] // Updated table headers
 };
@@ -18,10 +19,10 @@ export default function Reviewboard({ navigation }) {
   
   const handleEdit = (rowItem) => {
     const [id, username, song, artist, rating] = rowItem;
-
+  
     Alert.alert(
       `Edit Item ID: ${id}?`,
-      'Do you want to edit this item? \n Note: Click save if you leave the field unchanged, not \'cancel\'. \n Cancel ends the saving operation completely!',
+      'Do you want to edit this item?',
       [
         {
           text: 'Cancel',
@@ -30,17 +31,7 @@ export default function Reviewboard({ navigation }) {
         {
           text: 'Edit',
           onPress: () => {
-            editField('Song', song, (updatedSong) => {
-              editField('Artist', artist, (updatedArtist) => {
-                editField('Rating', rating.toString(), (updatedRating) => {
-                  // Perform the update logic here using updatedSong, updatedArtist, updatedRating
-                  console.log(`Updated Item ID: ${id}`);
-                  console.log('Updated Song:', updatedSong);
-                  console.log('Updated Artist:', updatedArtist);
-                  console.log('Updated Rating:', updatedRating);
-                });
-              });
-            });
+            navigation.navigate('EditScreen', { id, username, song, artist, rating });
           },
         },
       ]
