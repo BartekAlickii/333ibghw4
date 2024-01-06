@@ -28,13 +28,18 @@ const EditScreen = ({ navigation, route }) => {
   };
 
   return (
+    // Laying out the selected review in a visible/clear way with options to edit appropriate fields. 
     <View style={styles.container}>
+      
+      {/* ID */}
       <Text style={styles.label}>ID:</Text>
       <Text style={styles.text}>{id}</Text>
 
+      {/* Username */}
       <Text style={styles.label}>Username:</Text>
       <Text style={styles.text}>{username}</Text>
 
+      {/* Song */}
       <Text style={styles.label}>Edit Song:</Text>
       <TextInput
         style={styles.input}
@@ -43,6 +48,7 @@ const EditScreen = ({ navigation, route }) => {
         placeholder="Enter edited song"
       />
 
+      {/* Artist */}
       <Text style={styles.label}>Edit Artist:</Text>
       <TextInput
         style={styles.input}
@@ -50,7 +56,8 @@ const EditScreen = ({ navigation, route }) => {
         onChangeText={setEditedArtist}
         placeholder="Enter edited artist"
       />
-
+      
+      {/* Rating */}
       <Text style={styles.label}>Edit Rating:</Text>
       <TextInput
         style={styles.input}
@@ -59,7 +66,8 @@ const EditScreen = ({ navigation, route }) => {
         placeholder="Enter edited rating"
         keyboardType="numeric"
       />
-
+      
+      {/* Buttons for the user to choose to save changes or cancel the Edit operation.  */}
       <Button title="Save Changes" onPress={handleSave} />
 
       <Button title="Cancel" onPress={handleCancel} color="red" />
