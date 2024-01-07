@@ -54,3 +54,9 @@ one can sucessfully run the code from this repo by:
 - The code should execute properly! :D
 - Now make sure that your config.js has your correct ip address entered.
 - That should hopefully be it! Enjoy~
+
+# Additional potential issue
+- Make sure that your xampp backend is running the hw3 version since the axios requests demand a folder structure as such (for example edit functionality) =>
+- "axios
+        .put(`http://localhost/333ibghw3/index.php/user/edit?id=${id}&username=${username}&song=${editedSong}&artist=${editedArtist}&rating=${editedRating}`)"
+- This indicates that in the localhost for your xammp you must have hw3's backend setup properly oriented with these directories matching^.
