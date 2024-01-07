@@ -52,3 +52,5 @@ one can sucessfully run the code from this repo by:
 - Enter 'npm run ios' into the terminal (ensure watchman has access to your working folder)
 - If/When prompted, 'use port 8082 instead?' Enter/choose yes!
 - The code should execute properly! :D
+- Now make sure that your config.js has your correct ip address entered.
+- That should hopefully be it! Enjoy~
