@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
+import config from './config';
 
 const EditScreen = ({ navigation, route }) => {
   const { id, username, song, artist, rating } = route.params;
@@ -19,7 +20,7 @@ const handleRatingChange = (text) => {
     if (!isNaN(numericValue) && Number.isInteger(numericValue) && numericValue >= 0 && numericValue <= 5) {
       // Implement PUT request using Axios to update the item
       axios
-        .put(`http://localhost/333ibghw3/index.php/user/edit?id=${id}&username=${username}&song=${editedSong}&artist=${editedArtist}&rating=${editedRating}`)
+        .put(`http://${config()}/333ibghw3/index.php/user/edit?id=${id}&username=${username}&song=${editedSong}&artist=${editedArtist}&rating=${editedRating}`)
         .then((response) => {
           console.log('Item updated successfully:', response.data);
           navigation.goBack(); // Navigate back on successful update

@@ -3,13 +3,14 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
+import config from './config';
 
 const DeleteScreen = ({ navigation, route }) => {
   const { id, username, song, artist, rating } = route.params;
 
   const handleDelete = () => {
     axios
-      .delete(`http://localhost/333ibghw3/index.php/user/delete?id=${id}&username=${username}&song=${song}&artist=${artist}`)
+      .delete(`http://${config()}/333ibghw3/index.php/user/delete?id=${id}&username=${username}&song=${song}&artist=${artist}`)
       .then((response) => {
         console.log('Item deleted successfully:', response.data);
         navigation.goBack(); // Navigate back on successful delete
