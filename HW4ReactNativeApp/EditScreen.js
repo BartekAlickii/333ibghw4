@@ -8,19 +8,30 @@ const EditScreen = ({ navigation, route }) => {
   const [editedSong, setEditedSong] = useState(song);
   const [editedArtist, setEditedArtist] = useState(artist);
   const [editedRating, setEditedRating] = useState(rating.toString());
+  const [invalidInput, setInvalidInput] = useState(false);
+
+const handleRatingChange = (text) => {
+  setEditedRating(text); // Update the rating as the user types
+};
 
   const handleSave = () => {
-    // Implement PUT request using Axios to update the item
-    axios
-      .put(`http://localhost/333ibghw3/index.php/user/edit?id=${id}&username=${username}&song=${editedSong}&artist=${editedArtist}&rating=${editedRating}`)
-      .then((response) => {
-        console.log('Item updated successfully:', response.data);
-        navigation.goBack(); // Navigate back on successful update
-      })
-      .catch((error) => {
-        console.error('Error updating item:', error);
-        Alert.alert('Error', 'Failed to update item. Please try again.');
-      });
+    const numericValue = parseInt(editedRating);
+    if (!isNaN(numericValue) && Number.isInteger(numericValue) && numericValue >= 0 && numericValue <= 5) {
+      // Implement PUT request using Axios to update the item
+      axios
+        .put(`http://localhost/333ibghw3/index.php/user/edit?id=${id}&username=${username}&song=${editedSong}&artist=${editedArtist}&rating=${editedRating}`)
+        .then((response) => {
+          console.log('Item updated successfully:', response.data);
+          navigation.goBack(); // Navigate back on successful update
+        })
+        .catch((error) => {
+          console.error('Error updating item:', error);
+          Alert.alert('Error', 'Failed to update item. Please try again.');
+        });
+    } else {
+      setInvalidInput(true); // Set invalid input flag if the input is invalid
+      Alert.alert('Invalid Rating', 'Please enter a single-digit integer between 0 and 5 for the rating.');
+    }
   };
 
   const handleCancel = () => {
@@ -62,10 +73,11 @@ const EditScreen = ({ navigation, route }) => {
       <TextInput
         style={styles.input}
         value={editedRating}
-        onChangeText={setEditedRating}
+        onChangeText={handleRatingChange}
         placeholder="Enter edited rating"
         keyboardType="numeric"
       />
+      {invalidInput && <Text style={{ color: 'red' }}>Please enter a valid rating (0-5).</Text>}
       
       {/* Buttons for the user to choose to save changes or cancel the Edit operation.  */}
       <Button title="Save Changes" onPress={handleSave} />
